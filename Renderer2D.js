@@ -57,6 +57,10 @@ const Renderer2D = ((container)=>{
         el.style.top = p.y/H*100+'%';
     }
 
+    const updateColor = function(el,r) {
+        el.style.backgroundColor = 'rgb('+Math.floor((1-r)*255)+',0,'+Math.floor((r)*255)+')';
+    }
+
     let render = function(data) {
         if(data.robots.length != robotCount) {
             refreshRobots(data.robots);
@@ -70,6 +74,7 @@ const Renderer2D = ((container)=>{
             let rel = robots[robot.name];
             rel.innerHTML = robot.health.toFixed(1)
             updatePosition(rel,robot.position);
+            updateColor(rel,robot.health);
         }
 
         while(data.bombs.length>bombs.length) {

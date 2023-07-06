@@ -23,4 +23,4 @@ sim.addRobot('TestRobot',TestRobot(),{x:300,y:300});
 
 const tid = setInterval(()=>{
     if(!sim.simulate()) clearInterval(tid);
-},10);
+},100);
