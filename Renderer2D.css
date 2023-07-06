@@ -1,0 +1,29 @@
+
+
+.arena{
+    border:2px solid black;
+    position:absolute;
+}
+
+.robot{
+    position:absolute;
+    width:20px;
+    height: 20px;
+    background-color: blue;
+    border-radius: 5px;
+    color:white;
+    text-align: center;
+    margin-top:-10px;
+    margin-left:-10px;
+}
+
+
+.bomb{
+    position:absolute;
+    width:6px;
+    height: 6px;
+    background-color: black;
+    margin-top:-3px;
+    margin-left:-3px;
+    border-radius: 50%;
+}
