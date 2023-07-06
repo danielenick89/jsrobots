@@ -16,7 +16,7 @@ const BestRobot = function() {
     return function({scan,fire}) {
         let a = nextAngle();
         let dist = scan(a,0.5);
-        if(dist!==null) {
+        if(dist>0) {
             lastGoodAngle = a;
             lastGoodDistance = dist;
         }

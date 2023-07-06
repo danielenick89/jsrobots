@@ -84,7 +84,7 @@ const Simulator = ((options)=>{
 
                 return robotsInRange.reduce((c,e)=>Math.min(c,distance(robot.state.position,e.state.position)),distance(robot.state.position,robotsInRange[0].state.position));
             }
-            return null
+            return -1
         }
         const fire = function(angle,distance) {
             if(fireLock) return null;

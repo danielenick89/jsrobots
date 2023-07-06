@@ -15,7 +15,7 @@ const TestRobot = function() {
     return function({scan,fire}) {
         let a = nextAngle();
         let dist = scan(a,0.5);
-        if(dist!==null) fire(a,dist)
+        if(dist>0) fire(a,dist)
         return {angle:randomAngle()}
     }
 }
