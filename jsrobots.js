@@ -16,7 +16,7 @@ const randomPosition = function() {
         y:Math.random()*1000,
     }
 }
-let N = 3;
+let N = 2;
 for(let i=0; i<N; i++) {
     sim.addRobot('TestRobot._'+i,TestRobot(),randomPosition())
 }
@@ -28,7 +28,7 @@ for(let i=0; i<N; i++) {
 }
 for(let i=0; i<N; i++) {
     sim.addRobot('BinaryRobot_'+i,BinaryRobot(0.1),randomPosition())
-}
+ }
 
 
 const tid = setInterval(()=>{

@@ -9,7 +9,7 @@ const TestRobot = function() {
         return Math.random()*2*Math.PI-Math.PI;
     }
 
-    let lastAngle = randomAngle();
+    let lastAngle = 0 //&& randomAngle();
 
 
     return function({scan,fire}) {

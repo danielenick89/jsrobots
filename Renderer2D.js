@@ -118,12 +118,11 @@ const Renderer2D = ((container)=>{
         updatePosition(el,scan.position)
 
         let {x:l} = convertCoordinates({x:scan.length,y:0});
-        el.style.borderRightWidth = l*arena.clientWidth/100+'px'
-        let dx = getScanHeight(scan);
-        el.style.marginTop = -dx+'px'
-        el.style.borderTopWidth = el.style.borderBottomWidth = dx+'px'
-        el.style.transform = 'rotate('+scan.angle+'rad)'
-        //el.style.width = l+'%'
+        el.style.width = el.style.height = l*2+'%';
+        el.style.marginTop = el.style.marginLeft = -l+'%';
+        el.style.transform = 'rotate('+(scan.angle-scan.width/2+Math.PI/2)+'rad)'
+        let limit = Math.round(scan.width/2/Math.PI*100);
+        el.style.backgroundImage = 'conic-gradient(yellow 0% '+limit+'%, rgba(0,0,0,0.0) '+limit+'% 100%)';
     }
 
     let render = function(data) {
