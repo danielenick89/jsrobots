@@ -4,7 +4,7 @@ const BinaryRobot = function(FIRE_WIDTH=0.1) {
     let dir = 0;
 
     let w = Math.PI;
-    let a=0;
+    let a=Math.random()*2*Math.PI;
 
     let queue = [];
     let next = {a,w}

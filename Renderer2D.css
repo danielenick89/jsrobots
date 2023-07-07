@@ -1,8 +1,10 @@
 
+body {}
 
 .arena{
     border:2px solid black;
     position:absolute;
+    overflow:hidden;
 }
 
 .robot{

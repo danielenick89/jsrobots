@@ -16,13 +16,13 @@ const randomPosition = function() {
         y:Math.random()*1000,
     }
 }
-let N = 3;
-for(let i=0; i<N; i++) {
-    sim.addRobot('TestRobot._'+i,TestRobot(),randomPosition())
-}
-for(let i=0; i<N; i++) {
-    sim.addRobot('BestRobot_'+i,BestRobot(),randomPosition())
-}
+let N = 1;
+// for(let i=0; i<N; i++) {
+//     sim.addRobot('TestRobot._'+i,TestRobot(),randomPosition())
+// }
+// for(let i=0; i<N; i++) {
+//     sim.addRobot('BestRobot_'+i,BestRobot(),randomPosition())
+// }
 for(let i=0; i<N; i++) {
     sim.addRobot('BestRobot2_'+i,BestRobot2(Math.PI/32),randomPosition())
 }
