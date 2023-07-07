@@ -15,7 +15,7 @@ const randomPosition = function() {
         y:Math.random()*1000,
     }
 }
-let N = 25;
+let N = 2;
 for(let i=0; i<N; i++) {
     sim.addRobot('TestRobot._'+i,TestRobot(),randomPosition())
 }
@@ -29,4 +29,4 @@ for(let i=0; i<N; i++) {
 
 const tid = setInterval(()=>{
     if(!sim.simulate()) clearInterval(tid);
-},10);
+},100);

@@ -16,6 +16,8 @@ const Simulator = ((options)=>{
     const renderers = []
     const robots = []
     const bombs = []
+    let explosionsBuffer = []
+    let scansBuffer = []
 
 
     const attachRenderer = function(renderer) {
@@ -41,6 +43,8 @@ const Simulator = ((options)=>{
         })
         time++;
         renderers.forEach(updateRenderer)
+        explosionsBuffer = []
+        scansBuffer = []
         if(robots.length <= 1) return false;
         return true;
     }
@@ -74,7 +78,12 @@ const Simulator = ((options)=>{
             if(scanLock) return null;
             scanLock = true;
             robot.state.timeToRechargeScan = TIME_TO_RECHARGE_SCAN
-            
+            scansBuffer.push({
+                position:robot.state.position,
+                angle: angle,
+                width:angleWidth,
+                length: SCAN_RANGE
+            })
             const robotsInRange = robots.filter(r=>distance(r.state.position,robot.state.position)<=SCAN_RANGE).filter(e=>e!=robot).filter(r=>{
                 let a = Math.PI + getAngle(robot.state.position,r.state.position)
                 return isAngleInRange(a,angle,angleWidth);
@@ -154,6 +163,10 @@ const Simulator = ((options)=>{
                 }
             }
         })
+        explosionsBuffer.push({
+            position: point,
+            radius: BOMB_DAMAGE_RANGE
+        })
     }
 
     const simulate = function(steps=1) {
@@ -166,7 +179,9 @@ const Simulator = ((options)=>{
     const updateRenderer = function(renderer) {
         renderer.render({
             robots: robots.map(e=>({position:e.state.position,name:e.name,health:e.state.health})),
-            bombs:bombs.map(e=>({position:e.state.position,destination:e.state.destination}))
+            bombs:bombs.map(e=>({position:e.state.position,destination:e.state.destination})),
+            explosions:explosionsBuffer,
+            scans:scansBuffer
         })
     }
 
