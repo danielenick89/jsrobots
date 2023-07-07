@@ -9,14 +9,12 @@ const BinaryRobot = function(FIRE_WIDTH=0.1) {
     let queue = [];
     let next = {a,w}
     return function({scan,fire}) {
-        console.log(queue)
         let {a,w} = next;
         let s = scan(a,w);
-        console.log(s,a,w)
         if(s!==null) {
             if(s>0 && w<=FIRE_WIDTH) {
                 fire(a,s);
-                queue.push(next)
+                return 
             } else {
                 if(s>0) {
                     queue=[]

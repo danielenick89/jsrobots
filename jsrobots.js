@@ -6,7 +6,7 @@ import { BestRobot } from "./BestRobot.js";
 import { BestRobot2 } from "./BestRobot2.js";
 import { BinaryRobot } from "./BinarySearchRobot.js";
 
-let sim = Simulator({TIME_TO_RECHARGE_FIRE: 20});
+let sim = Simulator({TIME_TO_RECHARGE_FIRE: 10});
 let renderer = Renderer2D(document.getElementById('container'));
 sim.attachRenderer(renderer);
 
@@ -27,7 +27,7 @@ for(let i=0; i<N; i++) {
     sim.addRobot('BestRobot2_'+i,BestRobot2(Math.PI/32),randomPosition())
 }
 for(let i=0; i<N; i++) {
-    sim.addRobot('BinaryRobot_'+i,BinaryRobot(0.05),randomPosition())
+    sim.addRobot('BinaryRobot_'+i,BinaryRobot(0.1),randomPosition())
 }
 
 

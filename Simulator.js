@@ -113,8 +113,9 @@ const Simulator = ((options)=>{
             })
         }
 
-        const {angle} = robot.brain({scan,fire});
-        if(angle !== undefined) {
+        const ret = robot.brain({scan,fire});
+        if(ret && ret.angle !== undefined) {
+            const angle = ret.angle;
             robot.state.position.x += Math.cos(angle)*ROBOTS_SPEED;
             robot.state.position.y += Math.sin(angle)*ROBOTS_SPEED;
             if(robot.state.position.x<0) robot.state.position.x = 0;
