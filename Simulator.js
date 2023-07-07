@@ -7,8 +7,8 @@ const Simulator = ((options)=>{
     const MAX_BOMB_RANGE = options?.MAX_BOMB_RANGE || 700;
     const ROBOTS_SPEED = options?.ROBOTS_SPEED || 1;
     const BOMBS_SPEED = options?.BOMBS_SPEED || 10;
-    const WIDTH = options?.WIDTH || 1000;
-    const HEIGHT = options?.HEIGHT || 1000;
+    const WIDTH = options?.WIDTH || 800;
+    const HEIGHT = options?.HEIGHT || 800;
     const BOMB_DAMAGE_RANGE = options?.BOMB_DAMAGE_RANGE || 30;
     const BOMB_DAMAGE_RATIO = options?.BOMB_DAMAGE_RATIO || 1;
 

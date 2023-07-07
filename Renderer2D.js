@@ -102,8 +102,8 @@ const Renderer2D = ((container)=>{
     const getScanHeight = function(scan) {
         let angle1 = scan.angle-scan.width/2;
         let angle2 = scan.angle+scan.width/2;
-        let p1 = {x:scan.position.x+Math.cos(angle1),y:scan.position.y+Math.sin(angle1)*scan.range}
-        let p2 = {x:scan.position.x+Math.cos(angle2),y:scan.position.y+Math.sin(angle2)*scan.range}
+        let p1 = {x:scan.position.x+Math.cos(angle1)*scan.length,y:scan.position.y+Math.sin(angle1)*scan.length}
+        let p2 = {x:scan.position.x+Math.cos(angle2)*scan.length,y:scan.position.y+Math.sin(angle2)*scan.length}
         let d = distance(p1,p2);
 
         let {x:l} = convertCoordinates({x:d,y:0});
