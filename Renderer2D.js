@@ -122,7 +122,7 @@ const Renderer2D = ((container)=>{
         el.style.marginTop = el.style.marginLeft = -l+'%';
         el.style.transform = 'rotate('+(scan.angle-scan.width/2+Math.PI/2)+'rad)'
         let limit = Math.round(scan.width/2/Math.PI*100);
-        el.style.backgroundImage = 'conic-gradient(yellow 0% '+limit+'%, rgba(0,0,0,0.0) '+limit+'% 100%)';
+        el.style.backgroundImage = 'conic-gradient(rgba(255,255,0,0.5) 0% '+limit+'%, rgba(0,0,0,0.0) '+limit+'% 100%)';
     }
 
     let render = function(data) {

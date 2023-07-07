@@ -16,7 +16,7 @@ const randomPosition = function() {
         y:Math.random()*1000,
     }
 }
-let N = 2;
+let N = 10;
 for(let i=0; i<N; i++) {
     sim.addRobot('TestRobot._'+i,TestRobot(),randomPosition())
 }
