@@ -14,8 +14,7 @@ const Renderer2D = ((container)=>{
         container.appendChild(list);
         W=width;
         H=height;
-        arena.style.width = W+'px';
-        arena.style.height = H+'px';
+        
     }
 
     const createRobotElement = function(name) {
@@ -97,18 +96,6 @@ const Renderer2D = ((container)=>{
 
     const distance = function(a,b) {
         return Math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2);
-    }
-
-    const getScanHeight = function(scan) {
-        let angle1 = scan.angle-scan.width/2;
-        let angle2 = scan.angle+scan.width/2;
-        let p1 = {x:scan.position.x+Math.cos(angle1)*scan.length,y:scan.position.y+Math.sin(angle1)*scan.length}
-        let p2 = {x:scan.position.x+Math.cos(angle2)*scan.length,y:scan.position.y+Math.sin(angle2)*scan.length}
-        let d = distance(p1,p2);
-
-        let {x:l} = convertCoordinates({x:d,y:0});
-
-        return l/100*arena.clientWidth;
     }
 
     const renderScan = function(scan) {

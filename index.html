@@ -3,9 +3,51 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <link rel="stylesheet" type="text/css" href="Renderer2D.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
+        <div id="interface">
+            <textarea id="code" rows="30" cols="100">
+function MyRobot() {
+    return function({scan,fire,state}) {
+        
+        return {
+            angle:0
+        }
+    }
+}
+            </textarea><br/>
+            <button id="goButton">go</button><br/>
+            <div class="docs">
+                <h1>Docs</h1>
+                <div>
+                    <b>scan(angle,width):</b><br>
+                    returns the distance of the closest enemy in the range of scan [angle-width/2,angle+width/2] or null if scan is not available yet (takes time to recharge)
+                </div>
+                <div>
+                    <b>fire(angle,distance):</b><br>
+                    Fires a bombs with [angle] direction which will explode at [distance]. returns true if the firing succeded or null if you need to wait for recharge
+                </div>
+                <div>
+                    <b>state</b><br>
+                    returns some information about the robot:
+                    state.position = {x: xposition, starting from the left, y: yposition, starting from the top}
+                    state.arena.width / state.arena.height : dimensions of the arena
+                    state.canFire : true if you can fire in this turn
+                    state.canScan : true if you can scan in this turn
+                </div>
+                <div>
+                    the function can return an object { angle: value } that will be the direction the robot will move in this turn. if no angle is defined, the robot will stay in its position.
+                </div>
+
+                <div>
+                    The goal is to destroy the other robot. every robot's function will be called in every turn.
+                </div>
+            </div>
+        </div>
+        
         <div id="container"></div>
         <script type="module" src="jsrobots.js"></script>
+        
     </body>
 </html>

@@ -1,0 +1,24 @@
+
+body {
+    margin:0;   
+}
+
+#container{
+    width:40vw;
+    margin:5vw;
+    height:40vw;
+    position:fixed;
+    left:0;
+}
+#interface{
+    padding:5vw;
+    position:fixed;
+    left:50vw;
+    width:50vw;
+    height:100vh;
+}
+
+.docs{
+    width:80%;
+
+}

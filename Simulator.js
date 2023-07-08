@@ -71,8 +71,6 @@ const Simulator = ((options)=>{
     const updateRobot = function(robot) {
         let scanLock = robot.state.timeToRechargeScan > 0;
         let fireLock = robot.state.timeToRechargeFire > 0;
-        if(robot.state.timeToRechargeFire) robot.state.timeToRechargeFire--;
-        if(robot.state.timeToRechargeScan) robot.state.timeToRechargeScan--;
 
         const scan = function(angle,angleWidth) {
             if(scanLock) return null;
@@ -111,9 +109,20 @@ const Simulator = ((options)=>{
                     }
                 }
             })
+            return true;
         }
 
-        const ret = robot.brain({scan,fire});
+        const ret = robot.brain({scan,fire,state:{
+            position:{...robot.state.position},
+            arena: {width:WIDTH,height:HEIGHT},
+            canFire: !fireLock,
+            canScan: !scanLock
+        }});
+
+
+        if(robot.state.timeToRechargeFire) robot.state.timeToRechargeFire--;
+        if(robot.state.timeToRechargeScan) robot.state.timeToRechargeScan--;
+
         if(ret && ret.angle !== undefined) {
             const angle = ret.angle;
             robot.state.position.x += Math.cos(angle)*ROBOTS_SPEED;
@@ -190,10 +199,15 @@ const Simulator = ((options)=>{
         //console.log(msg)
     }
 
+    const getRobots = function() {
+        return robots
+    }
+
     return {
         addRobot,
         attachRenderer,
-        simulate
+        simulate,
+        getRobots
     }
 });
 

@@ -16,21 +16,66 @@ const randomPosition = function() {
         y:Math.random()*1000,
     }
 }
-let N = 1;
-// for(let i=0; i<N; i++) {
-//     sim.addRobot('TestRobot._'+i,TestRobot(),randomPosition())
-// }
-// for(let i=0; i<N; i++) {
-//     sim.addRobot('BestRobot_'+i,BestRobot(),randomPosition())
-// }
-for(let i=0; i<N; i++) {
-    sim.addRobot('BestRobot2_'+i,BestRobot2(Math.PI/32),randomPosition())
+
+function runSimulation(robot,N=1,cb) {
+    // for(let i=0; i<N; i++) {
+    //     sim.addRobot('TestRobot._'+i,TestRobot(),randomPosition())
+    // }
+    // for(let i=0; i<N; i++) {
+    //     sim.addRobot('BestRobot_'+i,BestRobot(),randomPosition())
+    // }
+    for(let i=0; i<N; i++) {
+        sim.addRobot('You_'+i,robot,randomPosition())
+    }
+    for(let i=0; i<N; i++) {
+        sim.addRobot('BinaryRobot_'+i,BinaryRobot(0.1),randomPosition())
+     }
+    
+    
+    const tid = setInterval(()=>{
+        if(!sim.simulate()) {
+            clearInterval(tid);
+            cb(sim.getRobots()[0]?.name.split('_')[0]);
+        }
+    },0);    
 }
-for(let i=0; i<N; i++) {
-    sim.addRobot('BinaryRobot_'+i,BinaryRobot(0.1),randomPosition())
- }
+
+const stats = {total:0}
+let runNext = (i,cb) => {
+    if(i==1) {
+        cb(stats) 
+        return
+    }
+    stats.total++
+    runSimulation((winner)=>{
+        if(!stats[winner]) stats[winner] = 0
+        stats[winner]++;
+        runNext(i+1,cb);
+    });
+}
+
+// runNext(0,function(stats) {
+//     let ranking = [];
+//     for(let key in stats) {
+//         if(key === "total") continue
+//         ranking.push({name: key, wins: stats[key]/stats.total})
+//     }
+    
+//     ranking.sort((a,b)=>b.wins-a.wins)
+//     console.log(JSON.stringify(ranking))
+// })
+
+const go = function() {
+
+    let code = document.getElementById('code').value
+    let robot = eval('('+code+')')();
+    runSimulation(robot,1,function(winner) {
+        console.log(winner)
+    })
+}
 
 
-const tid = setInterval(()=>{
-    if(!sim.simulate()) clearInterval(tid);
-},20);
+document.getElementById('goButton').addEventListener('click',go);
+
+
+
