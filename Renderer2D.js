@@ -6,6 +6,7 @@ const Renderer2D = ((container)=>{
     let W,H;
     const bombs = [];
     const init = function({width,height}){
+        container.innerHTML = '';
         arena = document.createElement('div');
         arena.className = 'arena';
         container.appendChild(arena);
@@ -21,6 +22,9 @@ const Renderer2D = ((container)=>{
         const el = document.createElement('div');
         el.className = 'robot';
         arena.appendChild(el);
+        let nameEl = document.createElement('span');
+        el.appendChild(nameEl);
+        nameEl.innerHTML = name;
         return el;
     }
 

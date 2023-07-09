@@ -3,6 +3,7 @@ body {
     margin:0;   
 }
 
+
 #container{
     width:40vw;
     margin:5vw;
@@ -16,6 +17,31 @@ body {
     left:50vw;
     width:50vw;
     height:100vh;
+}
+
+#interface #code {
+    width:100%;
+    height: 300px;
+}
+
+@media only screen and (max-width: 1024px) {
+   
+    #container{
+        width:90vw;
+        margin:5vw;
+        height:90vw;
+        position:fixed;
+        left:0;
+    }
+    #interface{
+        left:0; 
+        padding:5vw;
+        position:fixed;
+        top:100vw;
+        width:90vw;
+        height:calc( 100vh - 100vw);
+        overflow: auto;
+    } 
 }
 
 .docs{

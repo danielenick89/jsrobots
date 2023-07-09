@@ -14,11 +14,15 @@ const Simulator = ((options)=>{
 
     let time = 0;
     const renderers = []
-    const robots = []
-    const bombs = []
+    let robots = []
+    let bombs = []
     let explosionsBuffer = []
     let scansBuffer = []
 
+    const init = function() {
+        robots = []
+        bombs = []
+    }
 
     const attachRenderer = function(renderer) {
         renderers.push(renderer)
@@ -203,11 +207,18 @@ const Simulator = ((options)=>{
         return robots
     }
 
+    init();
+
+    const rst = function() {
+        init();
+    }
+
     return {
         addRobot,
         attachRenderer,
         simulate,
-        getRobots
+        getRobots,
+        reset:rst
     }
 });
 

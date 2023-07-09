@@ -6,9 +6,7 @@ import { BestRobot } from "./BestRobot.js";
 import { BestRobot2 } from "./BestRobot2.js";
 import { BinaryRobot } from "./BinarySearchRobot.js";
 
-let sim = Simulator({TIME_TO_RECHARGE_FIRE: 10});
-let renderer = Renderer2D(document.getElementById('container'));
-sim.attachRenderer(renderer);
+
 
 const randomPosition = function() {
     return {
@@ -17,7 +15,10 @@ const randomPosition = function() {
     }
 }
 
-function runSimulation(robot,N=1,cb) {
+function runSimulation(name,robot,N=1,cb) {
+    let sim = Simulator({TIME_TO_RECHARGE_FIRE: 10});
+    let renderer = Renderer2D(document.getElementById('container'));
+    sim.attachRenderer(renderer);
     // for(let i=0; i<N; i++) {
     //     sim.addRobot('TestRobot._'+i,TestRobot(),randomPosition())
     // }
@@ -25,7 +26,7 @@ function runSimulation(robot,N=1,cb) {
     //     sim.addRobot('BestRobot_'+i,BestRobot(),randomPosition())
     // }
     for(let i=0; i<N; i++) {
-        sim.addRobot('You_'+i,robot,randomPosition())
+        sim.addRobot(name+'_'+i,robot,randomPosition())
     }
     for(let i=0; i<N; i++) {
         sim.addRobot('BinaryRobot_'+i,BinaryRobot(0.1),randomPosition())
@@ -37,7 +38,7 @@ function runSimulation(robot,N=1,cb) {
             clearInterval(tid);
             cb(sim.getRobots()[0]?.name.split('_')[0]);
         }
-    },0);    
+    },10);    
 }
 
 const stats = {total:0}
@@ -67,15 +68,37 @@ let runNext = (i,cb) => {
 
 const go = function() {
 
-    let code = document.getElementById('code').value
-    let robot = eval('('+code+')')();
-    runSimulation(robot,1,function(winner) {
+    let code = window.editor.getValue()
+    let robot = eval('('+code+')');
+
+    let robotFn = robot();
+    runSimulation(robot.name,robotFn,1,function(winner) {
         console.log(winner)
     })
 }
 
+const reset = function() {
+    localStorage.clear('code')
+    location.reload()
+}
+
+const persistToLocalStorage = function(code) {
+    localStorage.setItem('code',code)
+}
+
+const loadFromLocalStorage = function() {
+    let s = localStorage.getItem('code') 
+    if(s) {
+        window.editor.setValue(s);
+    }
+}
 
 document.getElementById('goButton').addEventListener('click',go);
+document.getElementById('resetButton').addEventListener('click',reset);
+editor.getSession().on('change', function() {
+    persistToLocalStorage(editor.getSession().getValue())
+});
 
+loadFromLocalStorage();
 
 

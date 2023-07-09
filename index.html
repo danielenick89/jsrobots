@@ -7,17 +7,41 @@
     </head>
     <body>
         <div id="interface">
-            <textarea id="code" rows="30" cols="100">
+            <div id="code">
+
 function MyRobot() {
+    const nextAngle = function() {
+        return lastAngle+=0.05;
+    }
+    const randomAngle = function() {
+        return Math.random()*2*Math.PI-Math.PI;
+    }
+
+    let lastAngle = randomAngle();
+    let lastGoodAngle = null;
+    let lastGoodDistance = null;
+    let dir = 0;
+
     return function({scan,fire,state}) {
-        
-        return {
-            angle:0
+        if(state.canScan) {
+            let a = nextAngle();
+            let dist = scan(a,0.5);
+            
+            if(dist>0) {
+                lastGoodAngle = a;
+                lastGoodDistance = dist;
+            }
         }
+        if(lastGoodAngle !== null && state.canFire) fire(lastGoodAngle,lastGoodDistance)
+        
+        if(Math.random()<0.005) dir+=Math.PI
+        
+        return {angle:dir+=Math.random()*0.2-0.1}
     }
 }
-            </textarea><br/>
-            <button id="goButton">go</button><br/>
+                
+</div><br/>
+            <button id="goButton">go</button><button id="resetButton">reset</button><br/>
             <div class="docs">
                 <h1>Docs</h1>
                 <div>
@@ -47,7 +71,19 @@ function MyRobot() {
         </div>
         
         <div id="container"></div>
+        <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script>
+                var editor = ace.edit("code");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/javascript");
+                editor.setOptions({
+                    //fontFamily: "tahoma",
+                    fontSize: "11pt"
+                });
+        </script>
+        
         <script type="module" src="jsrobots.js"></script>
+        
         
     </body>
 </html>
