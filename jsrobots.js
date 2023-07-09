@@ -15,28 +15,26 @@ const randomPosition = function() {
     }
 }
 
-function runSimulation(name,robot,N=1,cb) {
+function runSimulation(robot,N=1,cb) {
     let sim = Simulator({TIME_TO_RECHARGE_FIRE: 10});
     let renderer = Renderer2D(document.getElementById('container'));
     sim.attachRenderer(renderer);
-    // for(let i=0; i<N; i++) {
-    //     sim.addRobot('TestRobot._'+i,TestRobot(),randomPosition())
-    // }
-    // for(let i=0; i<N; i++) {
-    //     sim.addRobot('BestRobot_'+i,BestRobot(),randomPosition())
-    // }
+   
+    const name = robot.name||'YourRobot';
+    
     for(let i=0; i<N; i++) {
-        sim.addRobot(name+'_'+i,robot,randomPosition())
+        let instanceName = name+'_'+i
+        sim.addRobot(instanceName,robot(name,i),randomPosition(),name)
     }
     for(let i=0; i<N; i++) {
-        sim.addRobot('BinaryRobot_'+i,BinaryRobot(0.1),randomPosition())
+        sim.addRobot('BinaryRobot_'+i,BinaryRobot(0.1),randomPosition(),'BinaryRobot')
      }
     
     
     const tid = setInterval(()=>{
         if(!sim.simulate()) {
             clearInterval(tid);
-            cb(sim.getRobots()[0]?.name.split('_')[0]);
+            cb(sim.getRobots()[0]?.team);
         }
     },10);    
 }
@@ -71,8 +69,9 @@ const go = function() {
     let code = window.editor.getValue()
     let robot = eval('('+code+')');
 
-    let robotFn = robot();
-    runSimulation(robot.name,robotFn,1,function(winner) {
+    let n = document.getElementById('robotCount').value*1;
+    if(!n || n<0) n=1; 
+    runSimulation(robot,n,function(winner) {
         console.log(winner)
     })
 }

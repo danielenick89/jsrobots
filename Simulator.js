@@ -16,12 +16,14 @@ const Simulator = ((options)=>{
     const renderers = []
     let robots = []
     let bombs = []
+    let teams = {}
     let explosionsBuffer = []
     let scansBuffer = []
 
     const init = function() {
         robots = []
         bombs = []
+        teams = {}
     }
 
     const attachRenderer = function(renderer) {
@@ -29,13 +31,16 @@ const Simulator = ((options)=>{
         renderer.init({width:WIDTH,height:HEIGHT})
     }
 
-    const addRobot = function(name,brain,position) {
-        robots.push({brain,name,state: { 
+    const addRobot = function(name,brain,position,team=name) {
+        robots.push({brain,name,team,state: { 
             position:position || {x:WIDTH/2,y:HEIGHT/2}, 
             health: 1,
             timeToRechargeFire: 0,
             timeToRechargeScan: 0,
         }})
+
+        if(!teams[team]) teams[team] = [];
+        teams[team].push(name);
     }
 
     const simulateStep = function() {
@@ -49,8 +54,17 @@ const Simulator = ((options)=>{
         renderers.forEach(updateRenderer)
         explosionsBuffer = []
         scansBuffer = []
-        if(robots.length <= 1) return false;
+        if(isEnded()) return false;
         return true;
+    }
+
+    const isEnded = function() {
+        let teamsAlive = 0;
+        for(let team in teams) {
+            if(teams[team].length) teamsAlive++;
+            if(teamsAlive == 2) return false;
+        }
+         return true;
     }
 
     const isAngleInRange = function(angle, centerAngle, width) {
@@ -171,6 +185,7 @@ const Simulator = ((options)=>{
                 const damage = (1-d/BOMB_DAMAGE_RANGE)*BOMB_DAMAGE_RATIO;
                 if(r.state.health<=damage) {
                     robots.splice(i,1)
+                    teams[r.team].splice(teams[r.team].indexOf(r.name),1);
                     log(`robot '${r.name}' died`)
                 } else {
                     r.state.health-=damage;
