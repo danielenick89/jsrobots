@@ -11,7 +11,7 @@
 
 function MyRobot() {
     const nextAngle = function() {
-        return lastAngle+=0.05;
+        return lastAngle+=0.5;
     }
     const randomAngle = function() {
         return Math.random()*2*Math.PI-Math.PI;
@@ -47,34 +47,106 @@ function MyRobot() {
             <button id="benchmarkButton">run benchmark</button>
             <span id="benchmarkResults"></span>
             <div class="docs">
-                <h1>Docs</h1>
-                <div>
-                    <b>scan(angle,width):</b><br>
-                    returns the distance of the closest enemy in the range of scan [angle-width/2,angle+width/2] or null if scan is not available yet (takes time to recharge)
-                </div>
-                <div>
-                    <b>fire(angle,distance):</b><br>
-                    Fires a bombs with [angle] direction which will explode at [distance]. returns true if the firing succeded or null if you need to wait for recharge
-                </div>
-                <div>
-                    <b>state</b><br>
-                    returns some information about the robot:
-                    state.position = {x: xposition, starting from the left, y: yposition, starting from the top}
-                    state.arena.width / state.arena.height : dimensions of the arena
-                    state.canFire : true if you can fire in this turn
-                    state.canScan : true if you can scan in this turn
-                </div>
-                <div>
-                    the function can return an object { angle: value } that will be the direction the robot will move in this turn. if no angle is defined, the robot will stay in its position.
-                </div>
+                
+  <h1>Robot Battle Documentation</h1>
 
-                <div>
-                    The goal is to destroy the other robot. every robot's function will be called in every turn.
-                </div>
+
+  <div>
+    <h2>Game Overview</h2>
+    <p>Welcome to the Robot Battle Game! This documentation serves as a guide to help you understand and utilize the programming interface provided to control your robots in intense battles against each other. The game revolves around designing intelligent strategies for your robots to outwit and defeat their opponents.</p>
+
+    <h3>Game Overview</h3>
+    <p>In the Robot Battle Game, you will create and program your own robots to engage in thrilling combat within a virtual arena. Each robot will be controlled by a JavaScript function that determines its actions during the battle. The objective is to develop the most effective algorithm to destroy your opponents and emerge victorious.</p>
+
+    <p>Your robots will have access to various functions and information to aid in their decision-making. These functions include scanning the environment for enemy robots, firing bombs to eliminate targets, and retrieving vital details about the robot's current state. By leveraging these capabilities, you can devise intelligent strategies to outmaneuver your adversaries and deliver devastating blows.</p>
+
+    <h2>Programming Interface</h2>
+    <p>The programming interface exposes three essential variables: <code>scan</code>, <code>fire</code>, and <code>state</code>. The <code>scan</code> function allows your robot to gather information about the nearby enemies, while the <code>fire</code> function enables you to launch bombs at specific angles and distances. The <code>state</code> object provides valuable insights into the robot's position, the dimensions of the arena, and the availability of scanning and firing actions.</p>
+
+    <p>To control the behavior of your robot, you must define a function that takes a single argument—a destructured object containing <code>scan</code>, <code>fire</code>, and <code>state</code>—and returns an object specifying the direction the robot should move in the current turn.</p>
+
+    <h2>Strategy and Tactics</h2>
+    <p>The key to success in the Robot Battle Game lies in developing effective strategies and tactics. You must carefully analyze the environment, make smart decisions based on available information, and continuously adapt your robot's behavior to outwit opponents.</p>
+
+    <p>Experiment with different algorithms, iterate on your code, and refine your strategies to maximize your robot's combat effectiveness. Observe how your robots fare in battle and fine-tune their behavior to exploit enemy weaknesses. Remember, the ultimate goal is to become the supreme champion of the Robot Battle Game!</p>
+  </div>
+
+  <hr>
+
+
+  <h2>Example Robot</h2>
+  <pre>
+function() {
+    <code>// Function for controlling the robot's behavior</code>
+    const nextAngle = function() {
+        <code>// Returns the next angle to scan</code>
+        return lastAngle += 0.05;
+    }
+    const randomAngle = function() {
+        <code>// Returns a random angle</code>
+        return Math.random() * 2 * Math.PI - Math.PI;
+    }
+
+    let lastAngle = randomAngle();
+    let lastGoodAngle = null;
+    let lastGoodDistance = null;
+    let dir = 0;
+
+    return function({scan, fire, state}) {
+        if (state.canScan) {
+            let a = nextAngle();
+            let dist = scan(a, 0.5);
+
+            if (dist > 0) {
+                lastGoodAngle = a;
+                lastGoodDistance = dist;
+            }
+        }
+        if (lastGoodAngle !== null && state.canFire)
+            fire(lastGoodAngle, lastGoodDistance);
+
+        if (Math.random() < 0.005) dir += Math.PI;
+
+        return { angle: dir += Math.random() * 0.2 - 0.1 };
+    }
+}
+  </pre>
+
+  <h2>Functions</h2>
+  <h3><code>scan(angle, width)</code></h3>
+  <p>Returns the distance of the closest enemy within the specified scan range or null if scan is not available yet (takes time to recharge).</p>
+  <ul>
+    <li><code>angle</code>: The center angle of the scan range.</li>
+    <li><code>width</code>: The width of the scan range.</li>
+  </ul>
+
+  <h3><code>fire(angle, distance)</code></h3>
+  <p>Fires a bomb in the specified direction and at the specified distance. Returns true if the firing succeeded or null if you need to wait for recharge.</p>
+  <ul>
+    <li><code>angle</code>: The direction in which to fire the bomb.</li>
+    <li><code>distance</code>: The distance at which the bomb will explode.</li>
+  </ul>
+
+  <h3><code>state</code></h3>
+  <p>Returns information about the robot's current state.</p>
+  <ul>
+    <li><code>state.position</code>: An object with <code>x</code> and <code>y</code> properties representing the robot's position within the arena.</li>
+    <li><code>state.arena.width</code>: The width of the arena.</li>
+    <li><code>state.arena.height</code>: The height of the arena.</li>
+    <li><code>state.canFire</code>: A boolean indicating whether the robot can fire in the current turn.</li>
+    <li><code>state.canScan</code>: A boolean indicating whether the robot can perform a scan in the current turn.</li>
+  </ul>
+
+  <h2>Return Value</h2>
+  <p>The function can return an object <code>{ angle: value }</code> that represents the direction in which the robot will move in the current turn. If no angle is defined, the robot will stay in its current position.</p>
+
             </div>
         </div>
         
         <div id="container"></div>
+
+
+        <div class="credits">Game inspired by jrobots which in turn was inspired by crobots. Thanks to ChatGPT for the documentation. Thanks to ACE Editor for the editor. It's <a target="_blank" href="https://www.nicassio.it/daniele/blog">me</a> for the rest</div>
         <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
         <script>
                 var editor = ace.edit("code");

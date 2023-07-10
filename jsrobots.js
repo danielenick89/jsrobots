@@ -15,7 +15,10 @@ const randomPosition = function() {
     }
 }
 
+let simulationLock = false;
 function runSimulation(robot,{N=1,TIME_STEP=10,RUN_PER_STEP=1,RENDER=true},cb) {
+    if(simulationLock) return;
+    simulationLock = true;
     let sim = Simulator({TIME_TO_RECHARGE_FIRE: 10});
     
     if(RENDER)  {
@@ -37,7 +40,9 @@ function runSimulation(robot,{N=1,TIME_STEP=10,RUN_PER_STEP=1,RENDER=true},cb) {
     const tid = setInterval(()=>{
         if(!sim.simulate(RUN_PER_STEP)) {
             clearInterval(tid);
+            simulationLock = false;
             cb(sim.getRobots()[0]?.team==name);
+            
         }
     },TIME_STEP);    
 }

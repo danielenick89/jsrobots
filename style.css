@@ -39,7 +39,7 @@ body {
         position:fixed;
         top:100vw;
         width:90vw;
-        height:calc( 100vh - 100vw);
+        bottom:0;
         overflow: auto;
     } 
 
@@ -50,5 +50,14 @@ body {
 
 .docs{
     width:80%;
+    height: calc(100% - 500px);
+    overflow:auto;
 
+}
+
+.credits{
+    position:fixed;
+    bottom:1px;
+    width:100%;
+    text-align:center;
 }
