@@ -15,8 +15,10 @@ body {
     padding:5vw;
     position:fixed;
     left:50vw;
-    width:50vw;
+    top:0;
+    width:40vw;
     bottom: 0;
+    overflow: auto;
 }
 
 #interface #code {

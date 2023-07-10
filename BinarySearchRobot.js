@@ -8,10 +8,10 @@ const BinaryRobot = function(team,id) {
     let time = 0;
 
     let destQ = [
-        {x:100,y:100},
-        {x:700,y:100},
-        {x:700,y:700},
-        {x:100,y:700},
+        {x:50,y:50},
+        {x:750,y:50},
+        {x:750,y:750},
+        {x:50,y:750},
     ]
 
     
