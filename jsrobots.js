@@ -19,7 +19,7 @@ let simulationLock = false;
 function runSimulation(robot,{N=1,TIME_STEP=10,RUN_PER_STEP=1,RENDER=true},cb) {
     if(simulationLock) return;
     simulationLock = true;
-    let sim = Simulator({TIME_TO_RECHARGE_FIRE: 10});
+    let sim = Simulator({TIME_TO_RECHARGE_FIRE: 100});
     
     if(RENDER)  {
         const renderer = Renderer2D(document.getElementById('container'));
@@ -33,7 +33,7 @@ function runSimulation(robot,{N=1,TIME_STEP=10,RUN_PER_STEP=1,RENDER=true},cb) {
         sim.addRobot(instanceName,robot(name,i),randomPosition(),name)
     }
     for(let i=0; i<N; i++) {
-        sim.addRobot('BinaryRobot_'+i,BinaryRobot(0.1),randomPosition(),'BinaryRobot')
+        sim.addRobot('BinaryRobot_'+i,BinaryRobot(name,i),randomPosition(),'BinaryRobot')
      }
     
     
@@ -107,22 +107,21 @@ const benchmark = function() {
     let n = document.getElementById('robotCount').value*1;
     if(!n || n<0) n=1; 
 
-    let RUN_COUNT = 300;
+    let RUN_COUNT = 1000;
     let count=0,wins = 0;
     const once = function(cb) {
         if(count++ == RUN_COUNT) {
             cb();
             return
         }
-        runSimulation(robot,{N:n,TIME_STEP:0,RUN_PER_STEP:1000,RENDER:true},function(isWinner) {
+        runSimulation(robot,{N:n,TIME_STEP:0,RUN_PER_STEP:1000,RENDER:false},function(isWinner) {
             if(isWinner) wins++;
-            document.getElementById('benchmarkResults').innerHTML = 'Your robots wins ' +(wins/count*100).toFixed(3)+ '% of  times. (run '+count+ ' of '+RUN_COUNT+ ')'
+            document.getElementById('benchmarkResults').innerHTML = 'Your robots wins ' +(wins/count*100).toFixed(1)+ '% of  times. (run '+count+ ' of '+RUN_COUNT+ ')'
             once(cb);
         })
     }
 
     once(()=>{
-        document.getElementById('benchmarkResults').innerHTML = 'Your robots wins ' +(wins/RUN_COUNT*100).toFixed(3)+ '% of  times.'
     });
 }
 

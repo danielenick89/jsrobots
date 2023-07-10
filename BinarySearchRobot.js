@@ -1,14 +1,27 @@
 
-const BinaryRobot = function(FIRE_WIDTH=0.1) {
+const BinaryRobot = function(team,id) {
 
-    let dir = 0;
+    const FIRE_WIDTH = 0.1;
+    const THRESH = 20;
     let w = Math.PI;
     let a=Math.random()*2*Math.PI;
-    const THRESH = 50;
+    let time = 0;
+
+    let destQ = [
+        {x:100,y:100},
+        {x:700,y:100},
+        {x:700,y:700},
+        {x:100,y:700},
+    ]
+
+    
+    let currDest = id%4;
+    let dest = destQ[currDest];
 
     let queue = [];
     let next = {a,w}
     return function({scan,fire,state}) {
+        time++;
         let {a,w} = next;
         let s = scan(a,w);
         if(s!==null) {
@@ -27,11 +40,22 @@ const BinaryRobot = function(FIRE_WIDTH=0.1) {
             }
             next = queue.shift();
         }
-        if(state.position.x < THRESH) dir = 0;
+        /*if(state.position.x < THRESH) dir = 0;
         if(state.position.x > state.arena.width - THRESH) dir = Math.PI;
         if(state.position.y < THRESH) dir = Math.PI/2;
-        if(state.position.y > state.arena.height - THRESH) dir = 3/2*Math.PI;
-        return {angle: dir+=Math.random()*0.2-0.1}
+        if(state.position.y > state.arena.height - THRESH) dir = 3/2*Math.PI;*/
+        
+
+        let dx = state.position.x-dest.x;
+        let dy = state.position.y-dest.y;
+        if(Math.sqrt(dx**2+dy**2)<THRESH) {
+            currDest++;
+            currDest%=4;
+            dest = destQ[currDest];
+        }
+        
+        let dir = Math.PI+Math.atan2(dy,dx)
+        return {angle: dir}//dir+= Math.random()*0.2-0.1 }
     }
 }
 

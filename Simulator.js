@@ -141,7 +141,7 @@ const Simulator = ((options)=>{
         if(robot.state.timeToRechargeFire) robot.state.timeToRechargeFire--;
         if(robot.state.timeToRechargeScan) robot.state.timeToRechargeScan--;
 
-        if(ret && ret.angle !== undefined) {
+        if(ret && ret.angle !== undefined && !isNaN(ret.angle)) {
             const angle = ret.angle;
             robot.state.position.x += Math.cos(angle)*ROBOTS_SPEED;
             robot.state.position.y += Math.sin(angle)*ROBOTS_SPEED;
