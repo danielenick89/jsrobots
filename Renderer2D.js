@@ -15,7 +15,6 @@ const Renderer2D = ((container)=>{
         container.appendChild(list);
         W=width;
         H=height;
-        
     }
 
     const createRobotElement = function(name) {

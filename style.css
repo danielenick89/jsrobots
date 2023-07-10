@@ -42,6 +42,10 @@ body {
         height:calc( 100vh - 100vw);
         overflow: auto;
     } 
+
+    .robot-list {
+        display: none;
+    }
 }
 
 .docs{

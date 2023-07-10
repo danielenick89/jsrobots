@@ -15,10 +15,13 @@ const randomPosition = function() {
     }
 }
 
-function runSimulation(robot,N=1,cb) {
+function runSimulation(robot,{N=1,TIME_STEP=10,RUN_PER_STEP=1,RENDER=true},cb) {
     let sim = Simulator({TIME_TO_RECHARGE_FIRE: 10});
-    let renderer = Renderer2D(document.getElementById('container'));
-    sim.attachRenderer(renderer);
+    
+    if(RENDER)  {
+        const renderer = Renderer2D(document.getElementById('container'));
+        sim.attachRenderer(renderer);
+    }
    
     const name = robot.name||'YourRobot';
     
@@ -32,11 +35,11 @@ function runSimulation(robot,N=1,cb) {
     
     
     const tid = setInterval(()=>{
-        if(!sim.simulate()) {
+        if(!sim.simulate(RUN_PER_STEP)) {
             clearInterval(tid);
-            cb(sim.getRobots()[0]?.team);
+            cb(sim.getRobots()[0]?.team==name);
         }
-    },10);    
+    },TIME_STEP);    
 }
 
 const stats = {total:0}
@@ -46,7 +49,7 @@ let runNext = (i,cb) => {
         return
     }
     stats.total++
-    runSimulation((winner)=>{
+    runBenchmark((winner)=>{
         if(!stats[winner]) stats[winner] = 0
         stats[winner]++;
         runNext(i+1,cb);
@@ -71,8 +74,8 @@ const go = function() {
 
     let n = document.getElementById('robotCount').value*1;
     if(!n || n<0) n=1; 
-    runSimulation(robot,n,function(winner) {
-        console.log(winner)
+    runSimulation(robot,{N:n},function(isWinner) {
+        console.log(isWinner ? 'win' : 'loss')
     })
 }
 
@@ -92,8 +95,35 @@ const loadFromLocalStorage = function() {
     }
 }
 
+const benchmark = function() {
+    let code = window.editor.getValue()
+    let robot = eval('('+code+')');
+
+    let n = document.getElementById('robotCount').value*1;
+    if(!n || n<0) n=1; 
+
+    let RUN_COUNT = 300;
+    let count=0,wins = 0;
+    const once = function(cb) {
+        if(count++ == RUN_COUNT) {
+            cb();
+            return
+        }
+        runSimulation(robot,{N:n,TIME_STEP:0,RUN_PER_STEP:1000,RENDER:true},function(isWinner) {
+            if(isWinner) wins++;
+            document.getElementById('benchmarkResults').innerHTML = 'Your robots wins ' +(wins/count*100).toFixed(3)+ '% of  times. (run '+count+ ' of '+RUN_COUNT+ ')'
+            once(cb);
+        })
+    }
+
+    once(()=>{
+        document.getElementById('benchmarkResults').innerHTML = 'Your robots wins ' +(wins/RUN_COUNT*100).toFixed(3)+ '% of  times.'
+    });
+}
+
 document.getElementById('goButton').addEventListener('click',go);
 document.getElementById('resetButton').addEventListener('click',reset);
+document.getElementById('benchmarkButton').addEventListener('click',benchmark);
 editor.getSession().on('change', function() {
     persistToLocalStorage(editor.getSession().getValue())
 });
