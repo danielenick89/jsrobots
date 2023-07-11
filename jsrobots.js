@@ -22,6 +22,7 @@ const Robots = [
     BinaryRobot
 ]
 let tid;
+let currentRobot = BinaryRobot;
 function runSimulation(robot,{N=1,TIME_STEP=8,RUN_PER_STEP=1,RENDER=true},cb) {
     if(tid) clearInterval(tid);
     let sim = Simulator({TIME_TO_RECHARGE_FIRE: 100});
@@ -38,8 +39,8 @@ function runSimulation(robot,{N=1,TIME_STEP=8,RUN_PER_STEP=1,RENDER=true},cb) {
         sim.addRobot(instanceName,robot(name,i),randomPosition(),name)
     }
     for(let i=0; i<N; i++) {
-        let team = selectedRobot.name;
-        sim.addRobot(team+'_'+i,selectedRobot(team,i),randomPosition(),team)
+        let team = currentRobot.name;
+        sim.addRobot(team+'_'+i,currentRobot(team,i),randomPosition(),team)
      }
     
     
@@ -78,7 +79,7 @@ let runNext = (i,cb) => {
 // })
 
 const go = function() {
-
+    currentRobot = selectedRobot;
     let code = window.editor.getValue()
     let robot = eval('('+code+')');
 
@@ -106,6 +107,7 @@ const loadFromLocalStorage = function() {
 }
 
 const benchmark = function() {
+    currentRobot = selectedRobot;
     let code = window.editor.getValue()
     let robot = eval('('+code+')');
 
