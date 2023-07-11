@@ -45,6 +45,14 @@ function MyRobot(team,id) {
                 
 </div><br/>
             <button id="goButton">Simulate</button><br>
+            simulation speed <select id="timeStep">
+                <option value="0" >fastest</option>
+                <option value="5" >faster</option>
+                <option value="10" selected>fast</option>
+                <option value="50" >slow</option>
+                <option value="100" >slower</option>
+                <option value="1000" >debug</option>
+            </select><br>
             opponent: <select id="robotSelect"></select><br>
             robots per team:<input type="number" id="robotCount" value="1" placeholder="How many robots per team"> <br/>
             <button id="resetButton">reset code</button>

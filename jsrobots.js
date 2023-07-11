@@ -25,7 +25,7 @@ let tid;
 let currentRobot = BinaryRobot;
 function runSimulation(robot,{N=1,TIME_STEP=8,RUN_PER_STEP=1,RENDER=true},cb) {
     if(tid) clearInterval(tid);
-    let sim = Simulator({TIME_TO_RECHARGE_FIRE: 100});
+    let sim = Simulator({TIME_TO_RECHARGE_FIRE: 80});
     
     if(RENDER)  {
         const renderer = Renderer2D(document.getElementById('container'));
@@ -79,13 +79,14 @@ let runNext = (i,cb) => {
 // })
 
 const go = function() {
+    let ts = document.querySelector('#timeStep').value*1
     currentRobot = selectedRobot;
     let code = window.editor.getValue()
     let robot = eval('('+code+')');
 
     let n = document.getElementById('robotCount').value*1;
     if(!n || n<0) n=1; 
-    runSimulation(robot,{N:n},function(isWinner) {
+    runSimulation(robot,{N:n,TIME_STEP:ts},function(isWinner) {
         console.log(isWinner ? 'win' : 'loss')
     })
 }
