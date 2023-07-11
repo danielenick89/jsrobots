@@ -1,6 +1,6 @@
 
-const BestRobot2 = function(INC=0.2) {
-
+const BestRobot2 = function() {
+    const INC = 0.2;
     const nextAngle = function(inc) {
         return lastAngle+=inc;
     }

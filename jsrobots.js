@@ -15,6 +15,13 @@ const randomPosition = function() {
     }
 }
 
+const Robots = [
+    TestRobot,
+    BestRobot,
+    BestRobot2,
+    BinaryRobot
+]
+
 let simulationLock = false;
 function runSimulation(robot,{N=1,TIME_STEP=10,RUN_PER_STEP=1,RENDER=true},cb) {
     if(simulationLock) return;
@@ -33,7 +40,8 @@ function runSimulation(robot,{N=1,TIME_STEP=10,RUN_PER_STEP=1,RENDER=true},cb) {
         sim.addRobot(instanceName,robot(name,i),randomPosition(),name)
     }
     for(let i=0; i<N; i++) {
-        sim.addRobot('BinaryRobot_'+i,BinaryRobot(name,i),randomPosition(),'BinaryRobot')
+        let team = selectedRobot.name;
+        sim.addRobot(team+'_'+i,selectedRobot(team,i),randomPosition(),team)
      }
     
     
@@ -123,6 +131,28 @@ const benchmark = function() {
 
     once(()=>{
     });
+}
+let selectedRobot = BinaryRobot;
+
+const getOption = (r,i) => {
+    let o = document.createElement('option');
+    o.value = i
+
+    o.innerHTML = r.name;
+    if(r == selectedRobot) o.selected = true;
+
+    return o;
+}
+
+let options = document.querySelector('#robotSelect');
+
+options.onchange = function() {
+    selectedRobot = Robots[options.value*1]
+}
+
+for(let i=0; i<Robots.length; i++) {
+    let r = Robots[i]
+    options.appendChild(getOption(r,i));
 }
 
 document.getElementById('goButton').addEventListener('click',go);

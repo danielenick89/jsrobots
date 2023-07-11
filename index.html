@@ -9,9 +9,9 @@
         <div id="interface">
             <div id="code">
 
-function MyRobot() {
+function MyRobot(team,id) {
     const nextAngle = function() {
-        return lastAngle+=0.5;
+        return lastAngle+=0.1;
     }
     const randomAngle = function() {
         return Math.random()*2*Math.PI-Math.PI;
@@ -21,11 +21,14 @@ function MyRobot() {
     let lastGoodAngle = null;
     let lastGoodDistance = null;
     let dir = 0;
-
+    let dist = -1;
+    let a=0;
     return function({scan,fire,state}) {
         if(state.canScan) {
-            let a = nextAngle();
-            let dist = scan(a,0.5);
+            if(dist<0) {
+                a = nextAngle();
+            }
+            dist = scan(a,0.2);
             
             if(dist>0) {
                 lastGoodAngle = a;
@@ -42,6 +45,7 @@ function MyRobot() {
                 
 </div><br/>
             <button id="goButton">go</button>
+            <select id="robotSelect"></select>
             <input type="number" id="robotCount" value="1" placeholder="How many robots per team"> <br/>
             <button id="resetButton">reset code</button>
             <button id="benchmarkButton">run benchmark</button>
