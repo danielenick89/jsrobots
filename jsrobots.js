@@ -21,11 +21,9 @@ const Robots = [
     BestRobot2,
     BinaryRobot
 ]
-
-let simulationLock = false;
-function runSimulation(robot,{N=1,TIME_STEP=10,RUN_PER_STEP=1,RENDER=true},cb) {
-    if(simulationLock) return;
-    simulationLock = true;
+let tid;
+function runSimulation(robot,{N=1,TIME_STEP=8,RUN_PER_STEP=1,RENDER=true},cb) {
+    if(tid) clearInterval(tid);
     let sim = Simulator({TIME_TO_RECHARGE_FIRE: 100});
     
     if(RENDER)  {
@@ -45,10 +43,9 @@ function runSimulation(robot,{N=1,TIME_STEP=10,RUN_PER_STEP=1,RENDER=true},cb) {
      }
     
     
-    const tid = setInterval(()=>{
+    tid = setInterval(()=>{
         if(!sim.simulate(RUN_PER_STEP)) {
             clearInterval(tid);
-            simulationLock = false;
             cb(sim.getRobots()[0]?.team==name);
             
         }
